@@ -107,7 +107,7 @@ public class RestService  implements IService {
     @Override
 	public  List<Majournee> getMajourneesById(int userId) {
 		
-		return maJourneeRepository.findByIdAndIdUAndStatus(idCreationMajournee, userId,1);
+		return maJourneeRepository.findById(idCreationMajournee);
 	}
     
     public List<SoldeDebuterJournee>getSoldeDebuterJournees( int userId) {
@@ -1291,7 +1291,7 @@ public class RestService  implements IService {
 	@Override
 	public Majournee updateMajournee(int userId, Majournee ad) {
 		Majournee admin =maJourneeRepository
-                        .findById(userId);
+                        .findById(userId).get(0);
 	
     	admin.setCaisse(ad.getCaisse());
 		admin.setOrange(ad.getOrange());
