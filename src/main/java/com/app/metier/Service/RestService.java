@@ -27,6 +27,7 @@ import com.app.metier.entities.history;
 @Service
 public class RestService  implements IService {
     private volatile int idCreation = 0;
+    private volatile int idCreationMajournee = 0;
 	private  Date  aujourdhui = new Date();
 	private SimpleDateFormat formater = new SimpleDateFormat("dd/MM/yyyy");
     @Autowired
@@ -103,7 +104,12 @@ public class RestService  implements IService {
         response.put("deleted", Boolean.TRUE);
         return response;
     }
-   
+    @Override
+	public  List<Majournee> getMajourneesById(int userId) {
+		
+		return maJourneeRepository.findByIdAndIdUAndStatus(idCreationMajournee, userId,1);
+	}
+    
     public List<SoldeDebuterJournee>getSoldeDebuterJournees( int userId) {
         return soldeDebuterJourneeRepository.findByIdAndIdUAndStatus(idCreation, userId,1);
     }
@@ -138,7 +144,7 @@ public class RestService  implements IService {
     	copie.setIdU(user.getIdU());
     	copie.setDate(user.getDate());
     	copie.setStatus(user.getStatus());
-    	maJourneeRepository.save(copie);
+    	idCreationMajournee =maJourneeRepository.save(copie).getId();
     	idCreation = soldeDebuterJourneeRepository.save(user).getId();
         return soldeDebuterJourneeRepository.save(user);
     }
@@ -192,7 +198,7 @@ public class RestService  implements IService {
     			soldeDebuterJourneeRepository
                         .findById(userId);
     	soldeDebuterJourneeRepository.delete(user);
-    	maJourneeRepository.deleteById(maJourneeRepository.findByDateAndIdUAndStatus(user.getDate(),user.getIdU(),user.getStatus()).get(0).getId());
+    	maJourneeRepository.deleteById(maJourneeRepository.findByIdAndIdUAndStatus(idCreationMajournee,user.getIdU(),user.getStatus()).get(0).getId());
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return response;
@@ -666,7 +672,7 @@ public class RestService  implements IService {
     public double cloturer(  int id, double con){	
     	
     	SoldeDebuterJournee solde =soldeDebuterJourneeRepository.findByIdAndIdUAndStatus(idCreation,id,1).get(0);
-    	Majournee solde1 =maJourneeRepository.findByDateAndIdUAndStatus(formater.format(aujourdhui),id,1).get(0);
+    	Majournee solde1 =maJourneeRepository.findByIdAndIdUAndStatus(idCreationMajournee,id,1).get(0);
         solde.setCloturer(con);
         solde1.setCloturer(con);
         updateSoldeDebuterJournee(solde.getId(),solde);
@@ -739,7 +745,7 @@ public class RestService  implements IService {
 
     
     public double sommeInitiale( int id){
-    	Majournee solde =maJourneeRepository.findByDateAndIdUAndStatus(formater.format(aujourdhui),id,1).get(0);
+    	Majournee solde =maJourneeRepository.findByIdAndIdUAndStatus(idCreationMajournee,id,1).get(0);
     	return (solde!=null)? solde.getCaisse() : 0;
      }
    
@@ -1265,7 +1271,7 @@ public class RestService  implements IService {
     
     private void mettreTransactionAzero(int idU) {
     	SoldeDebuterJournee solde =soldeDebuterJourneeRepository.findByIdAndIdUAndStatus(idCreation,idU,1).get(0);
-    	Majournee jour = maJourneeRepository.findByDateAndIdUAndStatus(formater.format(aujourdhui),idU,1).get(0);
+    	Majournee jour = maJourneeRepository.findByIdAndIdUAndStatus(idCreationMajournee,idU,1).get(0);
     	List<Transaction> listes = listeTansactionParCassier(idU);
     	
     	for (Transaction transaction : listes) {
@@ -1281,12 +1287,7 @@ public class RestService  implements IService {
 		
     }
 
-	@Override
-	public  List<Majournee> getMajourneesById(int userId) {
-		
-		return maJourneeRepository.findByDateAndIdUAndStatus(formater.format(aujourdhui), userId,1);
-	}
-
+	
 	@Override
 	public Majournee updateMajournee(int userId, Majournee ad) {
 		Majournee admin =maJourneeRepository
@@ -1319,7 +1320,7 @@ public class RestService  implements IService {
     	SoldeDebuterJournee solde =soldeDebuterJourneeRepository.findByIdAndDateAndStatus(userId,formater.format(aujourdhui),1);
         
 		
-		Majournee copie = maJourneeRepository.findByIdUAndDateAndStatus(solde.getIdU(),formater.format(aujourdhui),1);
+		Majournee copie = maJourneeRepository.findByIdUAndIdAndStatus(solde.getIdU(),idCreationMajournee,1);
     	copie.setCaisse(user.getCaisse());
     	copie.setOrange(user.getOrange());
     	copie.setxpress(user.getxpress());
