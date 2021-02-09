@@ -8,7 +8,7 @@ import com.app.metier.entities.Majournee;
 
 @Repository
 public interface DaoMajourne extends JpaRepository<Majournee,Integer> {
-	Majournee findByIdUAndIdAndStatus(int id,int date ,int idU);
-	List<Majournee> findById(int userId);
-	List<Majournee> findByIdAndIdUAndStatus(int date ,int idU,int status);
+	Majournee findByIdUAndDateAndStatus(int id,String date ,int idU);
+	Majournee findById(int userId);
+	List<Majournee> findByDateAndIdUAndStatus(String date ,int idU,int status);
 }
