@@ -10,5 +10,5 @@ import com.app.metier.entities.Majournee;
 public interface DaoMajourne extends JpaRepository<Majournee,Integer> {
 	Majournee findByIdUAndDateAndStatus(int id,String date ,int idU);
 	Majournee findById(int userId);
-	List<Majournee> findByDateAndIdUAndStatus(String date ,int idU,int status);
+	List<Majournee> findByIdAndIdUAndStatus(int date ,int idU,int status);
 }

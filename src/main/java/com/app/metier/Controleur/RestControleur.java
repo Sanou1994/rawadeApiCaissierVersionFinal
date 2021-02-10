@@ -87,8 +87,8 @@ public class RestControleur {
         return service.getSoldeDebuterJourneesById(userId);
     }
     
-    @GetMapping("/maJournee/{id}")
-    public List<Majournee> getMJourneesById(@PathVariable(value = "id") int userId) {
+    @GetMapping("/maJournee/caissier/{idU}")
+    public List<Majournee> getMJourneesById(@PathVariable(value = "idU") int userId) {
         return service.getMajourneesById(userId);
     }
     
