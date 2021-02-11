@@ -27,7 +27,7 @@ import com.app.metier.entities.history;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RequestMapping("/api")
 public class RestControleur {
-    @Autowired(required=true)
+    @Autowired
     private RestService service;
    
 	@GetMapping("/dates")

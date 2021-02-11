@@ -2,7 +2,7 @@ package com.app;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-@SpringBootApplication( scanBasePackages = { "com.app" })
+@SpringBootApplication( scanBasePackages = { "com.app." })
 public class RawadeApplication {
 
 	public static void main(String[] args) {
