@@ -8,13 +8,18 @@ import org.springframework.stereotype.Component;
 import com.app.metier.entities.Connexion;
 import com.app.metier.entities.Dates;
 import com.app.metier.entities.Majournee;
+import com.app.metier.entities.Position;
 import com.app.metier.entities.SoldeDebuterJournee;
 import com.app.metier.entities.Transaction;
 import com.app.metier.entities.Utilisateur;
 import com.app.metier.entities.history;
 @Component
 public interface IService {
-	
+	//PARTIE POSITION
+	public   List<Position> getPositionsByStatus(boolean status);
+    public Position createPosition(Position position);
+    List<Position> getPositionByIdU(int id);
+	List<Position> getPositionByIdUAndStatus(int id,boolean status);
     //PARTIE CAISSIER-CLIENT
     public List<Dates> getAllDates();
 	public void jour();
