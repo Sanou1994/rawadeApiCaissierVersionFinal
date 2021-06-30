@@ -91,9 +91,9 @@ public class RestControleur {
 		return service.getAllDates();
 	}
                      
-   //LA PARTIE CRUD DE UTILISATEUR    
+	   //LA PARTIE CRUD DE UTILISATEUR    
     
-    @GetMapping(ALL_USERS)
+    @GetMapping("/utilisateurs")
     public List<Utilisateur> listeUtilisateurs() {
         return service.getAllUsers();
     }
